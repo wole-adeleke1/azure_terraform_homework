@@ -25,7 +25,7 @@ resource "azurerm_subnet_network_security_group_association" "example" {
 
 resource "azurerm_network_security_rule" "example" {
   name                        = "test123"
-  priority                    = 100
+  priority                    = local.next_priority
   direction                   = "Outbound"
   access                      = "Allow"
   protocol                    = "Tcp"
@@ -34,5 +34,29 @@ resource "azurerm_network_security_rule" "example" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = "subscription_1"
-  network_security_group_name = "Sub_1_NSG"
+  network_security_group_name = azurerm_network_security_group.example.name
+}
+
+data "azurerm_network_security_group" "lookup_priority" {
+  name                = azurerm_network_security_group.example.name
+  resource_group_name = var.resource_group.name
+
+  depends_on = [
+    azurerm_network_security_group.example
+  ]
+}
+
+resource "random_integer" "priority" {
+  min = local.max_priority
+  max = 4096
+}
+
+locals {
+    used_priority = data.azurerm_network_security_group.lookup_priority.security_rule[*].priority
+    max_priority = max(local.used_priority...) 
+    next_priority = random_integer.priority.result
+}
+
+output "used_priority" {
+    value = local.used_priority
 }

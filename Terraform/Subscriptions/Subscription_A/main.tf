@@ -5,7 +5,7 @@ locals {
 
 provider "azurerm" {
   features {}
-  subscription_id = "f06a0be6-fe70-4fca-a3aa-9c0bc23f66cf"
+  subscription_id = "4c92e08f-658e-4c35-b66a-571ff5009133"
 }
 
 resource "azurerm_resource_group" "example" {

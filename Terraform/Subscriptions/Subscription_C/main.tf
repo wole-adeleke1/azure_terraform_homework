@@ -1,11 +1,11 @@
 locals {
-  sub_name      = "Subscription_C"
+  sub_name      = "subscription_1"
   address_space = "10.0.3.0/24"
 }
 
 provider "azurerm" {
   features {}
-  subscription_id = "f06a0be6-fe70-4fca-a3aa-9c0bc23f66cf"
+  subscription_id = "de31869a-66d5-4aa5-ba2e-7ddfb0326f1b"
 }
 
 resource "azurerm_resource_group" "example" {
